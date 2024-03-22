@@ -90,6 +90,12 @@ func (e *targetBuilder) build(target *config.TargetConfig, targetName string) (m
 		} else {
 			// nil is a nop method
 			methods = append(methods, nil)
+			diags = append(diags, &hcl.Diagnostic{
+				Severity: hcl.DiagWarning,
+				Summary:  "Encryption missing method",
+				Detail:   "A method was not provided, this should only be done for encryption migration as it presents a security risk.",
+				Subject:  target.Method.Range().Ptr(),
+			})
 		}
 	}
 
